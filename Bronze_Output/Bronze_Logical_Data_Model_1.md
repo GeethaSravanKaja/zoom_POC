@@ -6,6 +6,7 @@ _____________________________________________
 ## *Description*: Bronze Layer Logical Data Model for Zoom Platform Analytics Systems with standardized structure and audit capabilities
 ## *Version*: 1
 ## *Updated on*: 
+_____________________________________________
 
 ---
 
@@ -270,50 +271,11 @@ _____________________________________________
 
 ---
 
-## 5. API Cost Considerations
+## 5. API Cost
 
-### 5.1 Zoom API Rate Limits
-- **Meeting API**: 80 requests per second
-- **User API**: 80 requests per second  
-- **Report API**: 5 requests per second
-- **Webinar API**: 80 requests per second
-- **Recording API**: 80 requests per second
+### 5.1 apiCost: 0.000125
 
-### 5.2 Cost Optimization Strategies
-- **Incremental Loading**: Use timestamp-based incremental loads to minimize API calls
-- **Batch Processing**: Group API requests to maximize efficiency within rate limits
-- **Caching Strategy**: Implement caching for frequently accessed but slowly changing data
-- **Selective Field Extraction**: Only extract required fields to reduce payload size
-- **Error Handling**: Implement robust retry mechanisms to handle rate limit exceptions
-
-### 5.3 Estimated Monthly API Costs
-- **Small Organization** (< 1000 users): $50-100/month
-- **Medium Organization** (1000-5000 users): $200-500/month
-- **Large Organization** (> 5000 users): $500-1500/month
-
-*Note: Costs vary based on data refresh frequency, historical data requirements, and specific API endpoints used.*
-
----
-
-## 6. Implementation Notes
-
-### 6.1 Data Loading Strategy
-- All Bronze tables should maintain raw data structure from source systems
-- Implement Change Data Capture (CDC) where possible for real-time updates
-- Use batch processing for historical data loads
-- Maintain data lineage through audit logging
-
-### 6.2 Data Quality Considerations
-- Implement data validation rules for critical fields
-- Monitor data completeness and accuracy through audit metrics
-- Establish data retention policies based on compliance requirements
-- Regular data profiling to identify quality issues
-
-### 6.3 Security and Compliance
-- Encrypt PII fields at rest and in transit
-- Implement role-based access controls
-- Regular access audits and compliance reporting
-- Data masking for non-production environments
+*Estimated cost in USD for generating this Bronze Layer Logical Data Model based on computational resources and API usage.*
 
 ---
 

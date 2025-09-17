@@ -1,14 +1,12 @@
+_____________________________________________
+## *Author*: AAVA
+## *Created on*: 
+## *Description*: Conceptual Data Model for Zoom Platform Analytics Systems Reports
+## *Version*: 1 
+## *Updated on*: 
+_____________________________________________
+
 # Conceptual Data Model for Zoom Platform Analytics Systems Reports
-
-## Metadata
-- **Author**: AAVA
-- **Version**: 1.0
-- **Date**: 2024
-- **Document Type**: Conceptual Data Model
-- **Project**: Zoom Platform Analytics Systems Reports
-- **Status**: Initial Version
-
----
 
 ## 1. Domain Overview
 
@@ -23,9 +21,7 @@ Key business areas include:
 - Security and compliance monitoring
 - Integration and API usage tracking
 
----
-
-## 2. Entity Names and Descriptions
+## 2. List of Entity Name with a description
 
 ### 2.1 Core Business Entities
 
@@ -79,9 +75,7 @@ Key business areas include:
 16. **API_Call**
     - Logged API requests and responses for integration monitoring and usage tracking
 
----
-
-## 3. Entity Attributes
+## 3. List of Attributes for each Entity with a description for each attribute
 
 ### 3.1 User
 - User Name: Full name of the user
@@ -281,9 +275,7 @@ Key business areas include:
 - Rate Limit Status: Usage quota and restrictions
 - Error Message: Failure description if applicable
 
----
-
-## 4. Key Performance Indicators (KPIs)
+## 4. KPI List
 
 ### 4.1 User Engagement KPIs
 1. **Monthly Active Users (MAU)**: Number of unique users accessing the platform monthly
@@ -325,50 +317,46 @@ Key business areas include:
 29. **Policy Violation Count**: Number of organizational policy breaches
 30. **Encryption Coverage**: Percentage of data protected by encryption
 
----
-
-## 5. Conceptual Data Model Diagram (Tabular Representation)
+## 5. Conceptual Data Model Diagram in tabular form by one table is having a relationship with other table by which key field
 
 ### 5.1 Core Entity Relationships
 
-| Parent Entity | Child Entity | Relationship Type | Cardinality | Business Rule |
-|---------------|--------------|-------------------|-------------|---------------|
-| Account | User | One-to-Many | 1:N | Each account can have multiple users |
-| User | Meeting | One-to-Many | 1:N | Each user can host multiple meetings |
-| Meeting | Participant | One-to-Many | 1:N | Each meeting can have multiple participants |
-| Meeting | Recording | One-to-Many | 1:N | Each meeting can have multiple recordings |
-| User | Session | One-to-Many | 1:N | Each user can have multiple sessions |
-| Account | Room | One-to-Many | 1:N | Each account can have multiple rooms |
-| User | Device | Many-to-Many | M:N | Users can access from multiple devices |
-| Meeting | Room | Many-to-One | N:1 | Multiple meetings can use the same room |
+| Parent Entity | Child Entity | Relationship Key Field | Relationship Type | Cardinality | Business Rule |
+|---------------|--------------|------------------------|-------------------|-------------|---------------|
+| Account | User | Account Name | One-to-Many | 1:N | Each account can have multiple users |
+| User | Meeting | User Name | One-to-Many | 1:N | Each user can host multiple meetings |
+| Meeting | Participant | Meeting Topic | One-to-Many | 1:N | Each meeting can have multiple participants |
+| Meeting | Recording | Meeting Topic | One-to-Many | 1:N | Each meeting can have multiple recordings |
+| User | Session | User Name | One-to-Many | 1:N | Each user can have multiple sessions |
+| Account | Room | Account Name | One-to-Many | 1:N | Each account can have multiple rooms |
+| User | Device | User Name | Many-to-Many | M:N | Users can access from multiple devices |
+| Meeting | Room | Room Name | Many-to-One | N:1 | Multiple meetings can use the same room |
 
 ### 5.2 Analytics Entity Relationships
 
-| Parent Entity | Child Entity | Relationship Type | Cardinality | Business Rule |
-|---------------|--------------|-------------------|-------------|---------------|
-| Account | Report | One-to-Many | 1:N | Each account can generate multiple reports |
-| User | Dashboard | Many-to-Many | M:N | Users can access multiple dashboards |
-| Meeting | Event | One-to-Many | 1:N | Each meeting generates multiple events |
-| Account | Usage_Summary | One-to-Many | 1:N | Each account has multiple usage summaries |
-| Meeting | Quality_Metric | One-to-Many | 1:N | Each meeting has multiple quality metrics |
-| Account | Integration | One-to-Many | 1:N | Each account can have multiple integrations |
-| Integration | API_Call | One-to-Many | 1:N | Each integration generates multiple API calls |
-| Report | Metric | Many-to-Many | M:N | Reports can include multiple metrics |
+| Parent Entity | Child Entity | Relationship Key Field | Relationship Type | Cardinality | Business Rule |
+|---------------|--------------|------------------------|-------------------|-------------|---------------|
+| Account | Report | Account Name | One-to-Many | 1:N | Each account can generate multiple reports |
+| User | Dashboard | User Name | Many-to-Many | M:N | Users can access multiple dashboards |
+| Meeting | Event | Meeting Topic | One-to-Many | 1:N | Each meeting generates multiple events |
+| Account | Usage_Summary | Account Name | One-to-Many | 1:N | Each account has multiple usage summaries |
+| Meeting | Quality_Metric | Meeting Topic | One-to-Many | 1:N | Each meeting has multiple quality metrics |
+| Account | Integration | Account Name | One-to-Many | 1:N | Each account can have multiple integrations |
+| Integration | API_Call | Integration Name | One-to-Many | 1:N | Each integration generates multiple API calls |
+| Report | Metric | Report Name | Many-to-Many | M:N | Reports can include multiple metrics |
 
 ### 5.3 Cross-Domain Relationships
 
-| Entity 1 | Entity 2 | Relationship Type | Cardinality | Business Rule |
-|----------|----------|-------------------|-------------|---------------|
-| Participant | User | Many-to-One | N:1 | Participants can be registered users |
-| Session | Meeting | Many-to-Many | M:N | Sessions can span multiple meetings |
-| Event | User | Many-to-One | N:1 | Events are associated with users |
-| Quality_Metric | Device | Many-to-One | N:1 | Quality metrics are device-specific |
-| Usage_Summary | User | Many-to-One | N:1 | Usage summaries track user activity |
-| API_Call | User | Many-to-One | N:1 | API calls are made by users |
+| Entity 1 | Entity 2 | Relationship Key Field | Relationship Type | Cardinality | Business Rule |
+|----------|----------|------------------------|-------------------|-------------|---------------|
+| Participant | User | Email Address | Many-to-One | N:1 | Participants can be registered users |
+| Session | Meeting | User Name | Many-to-Many | M:N | Sessions can span multiple meetings |
+| Event | User | User Name | Many-to-One | N:1 | Events are associated with users |
+| Quality_Metric | Device | Device Name | Many-to-One | N:1 | Quality metrics are device-specific |
+| Usage_Summary | User | User Name | Many-to-One | N:1 | Usage summaries track user activity |
+| API_Call | User | User Name | Many-to-One | N:1 | API calls are made by users |
 
----
-
-## 6. Common Data Elements
+## 6. Common Data Elements in Report Requirements
 
 ### 6.1 Temporal Data Elements
 - **Timestamp**: Standard date and time format for all temporal data
@@ -405,8 +393,6 @@ Key business areas include:
 - **Configuration**: System settings and parameters
 - **Performance Metric**: Technical measurement values
 - **Error Code**: Standardized error identification and classification
-
----
 
 ## 7. API Cost Calculation
 
@@ -464,72 +450,11 @@ Key business areas include:
 - Real-time Data API (20% of total): $372.00
 - Bulk Data Export (estimated 100GB/month): $5,000.00
 
-#### Total Monthly API Cost Estimate
+#### **Cost for this Call: $7,344.00**
+
+### 7.4 Total Monthly API Cost Estimate
 - **Base API Costs**: $1,786.00
 - **Premium Features**: $558.00
 - **Data Transfer**: $5,000.00
 - **Total Estimated Monthly Cost**: $7,344.00
 - **Annual Cost Estimate**: $88,128.00
-
-### 7.4 Cost Optimization Recommendations
-
-1. **API Call Optimization**: Implement caching strategies to reduce redundant API calls
-2. **Batch Processing**: Combine multiple requests into batch operations where possible
-3. **Data Compression**: Utilize compression for large data transfers
-4. **Selective Data Retrieval**: Request only necessary data fields to reduce payload sizes
-5. **Scheduled Synchronization**: Use scheduled bulk updates instead of real-time calls where appropriate
-6. **Rate Limit Management**: Optimize API call timing to stay within rate limits efficiently
-
-### 7.5 ROI Justification
-
-#### Business Value Generated
-- **Operational Efficiency**: $200,000 annual savings through automated reporting
-- **Decision Making**: $150,000 annual value from improved analytics insights
-- **User Experience**: $100,000 annual value from enhanced platform performance
-- **Compliance**: $50,000 annual savings from automated compliance reporting
-
-#### Total Annual Business Value: $500,000
-#### Net ROI: ($500,000 - $88,128) / $88,128 = 467% ROI
-
----
-
-## 8. Implementation Considerations
-
-### 8.1 Data Governance
-- Establish data quality standards and validation rules
-- Implement data lineage tracking for audit and compliance
-- Define data retention and archival policies
-- Create data access controls and security protocols
-
-### 8.2 Scalability Planning
-- Design for horizontal scaling to accommodate growth
-- Implement partitioning strategies for large datasets
-- Plan for real-time and batch processing requirements
-- Consider cloud-native architecture for elasticity
-
-### 8.3 Integration Architecture
-- Design RESTful APIs for external system integration
-- Implement event-driven architecture for real-time updates
-- Plan for data synchronization and conflict resolution
-- Establish monitoring and alerting for integration health
-
-### 8.4 Security and Privacy
-- Implement encryption for data at rest and in transit
-- Design role-based access controls for sensitive data
-- Ensure GDPR and other privacy regulation compliance
-- Plan for audit logging and security monitoring
-
----
-
-## 9. Next Steps
-
-1. **Stakeholder Review**: Present conceptual model to business stakeholders for validation
-2. **Technical Architecture**: Develop logical and physical data models
-3. **Prototype Development**: Create proof-of-concept implementation
-4. **Performance Testing**: Validate scalability and performance requirements
-5. **Security Assessment**: Conduct security review and penetration testing
-6. **Implementation Planning**: Develop detailed project timeline and resource allocation
-
----
-
-*This conceptual data model serves as the foundation for the Zoom Platform Analytics Systems Reports implementation. It should be reviewed and refined based on specific business requirements and technical constraints.*

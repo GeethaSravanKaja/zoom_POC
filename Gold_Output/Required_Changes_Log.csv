@@ -1,2 +1,4 @@
 Agent Name,Required Changes
 Gold Data Model Reviewer,Fix DDL execution failures remove foreign key constraints add missing fact tables complete Silver layer integration
+Gold Layer Physical Data Model Version 3 - Enhanced Edition,Mode 2 workflow implementation for enhanced data model structure
+Gold Data Model Reviewer - Zoom Platform Analytics Systems Version 3,Physical data model enhancements and SQL file generation

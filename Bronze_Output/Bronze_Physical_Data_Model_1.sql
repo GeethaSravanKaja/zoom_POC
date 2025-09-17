@@ -6,13 +6,16 @@ _____________________________________________
 ## *Updated on*: 
 _____________________________________________
 
-# Bronze Layer Physical Data Model for Zoom Platform Analytics Systems
+-- =====================================================
+-- BRONZE LAYER PHYSICAL DATA MODEL
+-- Zoom Platform Analytics Systems
+-- Snowflake Implementation
+-- =====================================================
 
-## 1. Bronze Layer DDL Script
+-- 1. Bronze Layer DDL Scripts
+-- =====================================================
 
-### 1.1 Core Business Entity Tables
-
--- **1. User Account Table**
+-- 1.1 User Account Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_user_account (
     user_display_name STRING,
     email_address STRING,
@@ -32,7 +35,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_user_account (
     source_system STRING
 );
 
--- **2. Organization Table**
+-- 1.2 Organization Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_organization (
     organization_name STRING,
     industry_classification STRING,
@@ -51,7 +54,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_organization (
     source_system STRING
 );
 
--- **3. Meeting Session Table**
+-- 1.3 Meeting Session Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_session (
     meeting_title STRING,
     meeting_type STRING,
@@ -72,7 +75,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_session (
     source_system STRING
 );
 
--- **4. Webinar Event Table**
+-- 1.4 Webinar Event Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_webinar_event (
     webinar_title STRING,
     event_description STRING,
@@ -92,7 +95,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_webinar_event (
     source_system STRING
 );
 
--- **5. Meeting Participant Table**
+-- 1.5 Meeting Participant Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_participant (
     participant_name STRING,
     join_time TIMESTAMP_NTZ,
@@ -100,7 +103,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_participant (
     total_attendance_duration NUMBER,
     participant_role STRING,
     audio_connection_type STRING,
-    video_status BOOLEAN,
+    video_status STRING,
     geographic_location STRING,
     connection_quality_rating NUMBER,
     interaction_count NUMBER,
@@ -112,7 +115,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_participant (
     source_system STRING
 );
 
--- **6. Recording Asset Table**
+-- 1.6 Recording Asset Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_recording_asset (
     recording_title STRING,
     recording_type STRING,
@@ -132,7 +135,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_recording_asset (
     source_system STRING
 );
 
--- **7. Device Connection Table**
+-- 1.7 Device Connection Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_device_connection (
     device_type STRING,
     operating_system STRING,
@@ -151,7 +154,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_device_connection (
     source_system STRING
 );
 
--- **8. Chat Communication Table**
+-- 1.8 Chat Communication Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_chat_communication (
     message_content STRING,
     message_timestamp TIMESTAMP_NTZ,
@@ -168,7 +171,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_chat_communication (
     source_system STRING
 );
 
--- **9. Screen Share Session Table**
+-- 1.9 Screen Share Session Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_screen_share_session (
     share_type STRING,
     share_duration NUMBER,
@@ -184,7 +187,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_screen_share_session (
     source_system STRING
 );
 
--- **10. Breakout Room Table**
+-- 1.10 Breakout Room Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_breakout_room (
     room_name STRING,
     room_capacity NUMBER,
@@ -199,9 +202,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_breakout_room (
     source_system STRING
 );
 
-### 1.2 Analytics and Metrics Entity Tables
-
--- **11. Usage Analytics Table**
+-- 1.11 Usage Analytics Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_usage_analytics (
     measurement_period STRING,
     total_meeting_count NUMBER,
@@ -217,7 +218,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_usage_analytics (
     source_system STRING
 );
 
--- **12. Quality Metrics Table**
+-- 1.12 Quality Metrics Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_quality_metrics (
     audio_quality_average NUMBER,
     video_quality_average NUMBER,
@@ -232,7 +233,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_quality_metrics (
     source_system STRING
 );
 
--- **13. Engagement Metrics Table**
+-- 1.13 Engagement Metrics Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_engagement_metrics (
     average_participation_rate NUMBER,
     chat_message_volume NUMBER,
@@ -247,7 +248,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_engagement_metrics (
     source_system STRING
 );
 
--- **14. Resource Utilization Table**
+-- 1.14 Resource Utilization Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_resource_utilization (
     storage_consumption NUMBER,
     bandwidth_usage NUMBER,
@@ -261,7 +262,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_resource_utilization (
     source_system STRING
 );
 
--- **15. Security Event Table**
+-- 1.15 Security Event Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_security_event (
     event_type STRING,
     event_timestamp TIMESTAMP_NTZ,
@@ -276,7 +277,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_security_event (
     source_system STRING
 );
 
--- **16. Billing Transaction Table (API costs removed as requested)**
+-- 1.16 Billing Transaction Table (API costs removed as requested)
 CREATE TABLE IF NOT EXISTS Bronze.bz_billing_transaction (
     transaction_type STRING,
     transaction_amount NUMBER,
@@ -291,9 +292,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_billing_transaction (
     source_system STRING
 );
 
-### 1.3 Audit Table
-
--- **17. Audit Log Table**
+-- 1.17 Audit Log Table
 CREATE TABLE IF NOT EXISTS Bronze.bz_audit_log (
     record_id NUMBER AUTOINCREMENT,
     source_table STRING,
@@ -303,40 +302,13 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_audit_log (
     status STRING
 );
 
-## 2. API Cost
+-- =====================================================
+-- 2. API Cost Information
+-- =====================================================
+-- Note: API cost fields have been removed from all tables as requested
+-- Original API cost tracking capabilities excluded per user requirements
+-- Cost tracking can be implemented through separate monitoring systems if needed
 
-apiCost: 0.000000
-
-## 3. Implementation Notes
-
-### 3.1 Snowflake Compatibility Features
-1. **Data Types**: All tables use Snowflake-supported data types (STRING, NUMBER, BOOLEAN, DATE, TIMESTAMP_NTZ)
-2. **Storage Format**: Uses Snowflake's default micro-partitioned storage
-3. **No Constraints**: No primary keys, foreign keys, indexes, or clustering keys as per Bronze layer requirements
-4. **Metadata Columns**: All tables include standard metadata columns for data lineage tracking
-5. **Audit Trail**: Dedicated audit table for tracking data processing activities
-
-### 3.2 Bronze Layer Design Principles
-1. **Raw Data Storage**: Tables store data as-is from source systems
-2. **Schema Flexibility**: Accommodates varying data formats and structures
-3. **Data Lineage**: Metadata columns enable tracking of data origin and processing
-4. **Scalability**: Designed to handle large volumes of streaming and batch data
-5. **API Cost Exclusion**: All API cost-related fields have been removed as requested
-
-### 3.3 Table Naming Convention
-1. **Prefix**: All Bronze layer tables use 'bz_' prefix
-2. **Schema**: All tables are created in the 'Bronze' schema
-3. **Naming**: Table names follow snake_case convention for consistency
-4. **Descriptive**: Names clearly indicate the entity or data type stored
-
-### 3.4 Data Loading Recommendations
-1. **Bulk Loading**: Use COPY INTO statements for initial data loads
-2. **Incremental Loading**: Implement streams and tasks for ongoing data ingestion
-3. **Error Handling**: Utilize the audit table for tracking load success/failure
-4. **Performance**: Consider clustering on frequently queried columns in Silver layer
-
-### 3.5 Security Considerations
-1. **Access Control**: Implement role-based access control (RBAC)
-2. **Data Masking**: Apply masking policies for sensitive data in higher layers
-3. **Audit Trail**: Maintain comprehensive audit logs for compliance
-4. **Encryption**: Leverage Snowflake's automatic encryption at rest and in transit
+-- =====================================================
+-- END OF BRONZE LAYER PHYSICAL DATA MODEL
+-- =====================================================

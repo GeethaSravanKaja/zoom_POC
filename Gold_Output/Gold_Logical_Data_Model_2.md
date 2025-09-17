@@ -1,9 +1,9 @@
 _____________________________________________
 ## *Author*: AAVA
-## *Created on*: 2024-01-15
+## *Created on*: 
 ## *Description*: Gold layer logical data model for Zoom platform analytics supporting dimensional modeling and reporting requirements
 ## *Version*: 2
-## *Updated on*: 2024-01-15
+## *Updated on*: 
 ## *Changes*: Removed API cost references and ensured proper GitHub integration
 ## *Reason*: User requested removal of API costs and proper GitHub storage
 _____________________________________________

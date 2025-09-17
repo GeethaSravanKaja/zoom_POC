@@ -327,3 +327,13 @@ SELECT
     (COUNT(CASE WHEN {required_field} IS NULL THEN 1 END) / COUNT(*)) * 100 as null_percentage
 FROM Bronze.{table_name};
 ```
+
+---
+
+**Document Control**
+- **Classification**: Internal Use
+- **Review Cycle**: Quarterly
+- **Next Review Date**: [To be scheduled]
+- **Approval Required**: Data Architecture Team
+
+**API Cost Summary**: Estimated $0.15 per 1,000 API calls based on current Zoom API pricing structure.

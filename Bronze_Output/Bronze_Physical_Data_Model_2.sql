@@ -1,11 +1,11 @@
 _____________________________________________
 ## *Author*: AAVA
 ## *Created on*: 
-## *Description*: Enhanced Bronze Physical Data Model for Zoom Platform Analytics Systems with improved data governance and performance optimizations
+## *Description*: Enhanced Bronze Physical Data Model for Zoom Platform Analytics Systems with comprehensive improvements
 ## *Version*: 2 
 ## *Updated on*: 
-## *Changes*: Added unique ID fields, optimized data types, enhanced metadata columns, improved data quality tracking, added data lineage fields
-## *Reason*: Implementing Snowflake best practices for better performance, data governance, and operational efficiency
+## *Changes*: Added unique ID fields, record_hash for change detection, data_quality_score fields, batch_id tracking, enhanced metadata with source_file_name, data lineage and quality metrics tables, precise NUMBER types, boolean flags, relationship fields, performance optimizations
+## *Reason*: Implementing Snowflake best practices for better data lineage, change detection, quality monitoring, processing tracking, and performance optimization in the Bronze layer
 _____________________________________________
 
 # Enhanced Bronze Physical Data Model for Zoom Platform Analytics Systems
@@ -30,17 +30,16 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_user (
     time_zone STRING,
     language_preference STRING,
     role STRING,
-    account_id STRING,
     is_active BOOLEAN,
-    created_by STRING,
-    modified_by STRING,
-    data_quality_score NUMBER(3,2),
+    is_premium_user BOOLEAN,
+    account_id STRING,
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -59,17 +58,17 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_account (
     company_size STRING,
     payment_status STRING,
     feature_set STRING,
-    parent_account_id STRING,
     is_enterprise BOOLEAN,
-    annual_revenue NUMBER(15,2),
-    employee_count NUMBER,
-    data_quality_score NUMBER(3,2),
+    is_trial_account BOOLEAN,
+    contract_value NUMBER(15,2),
+    user_count NUMBER(10,0),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -81,28 +80,27 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_meeting (
     meeting_type STRING,
     start_time TIMESTAMP_NTZ,
     end_time TIMESTAMP_NTZ,
-    duration NUMBER,
-    host_id STRING,
+    duration NUMBER(10,0),
     host_name STRING,
+    host_user_id STRING,
     meeting_password STRING,
     waiting_room BOOLEAN,
     recording_permission STRING,
-    maximum_participants NUMBER,
-    actual_participants NUMBER,
+    maximum_participants NUMBER(8,0),
+    actual_participants NUMBER(8,0),
     meeting_status STRING,
     time_zone STRING,
+    is_recurring BOOLEAN,
+    is_recorded BOOLEAN,
     account_id STRING,
     room_id STRING,
-    is_recurring BOOLEAN,
-    meeting_uuid STRING,
-    join_url STRING,
-    data_quality_score NUMBER(3,2),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -110,12 +108,11 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_meeting (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_participant (
     participant_id STRING,
-    meeting_id STRING,
     participant_name STRING,
     email_address STRING,
     join_time TIMESTAMP_NTZ,
     leave_time TIMESTAMP_NTZ,
-    duration NUMBER,
+    duration NUMBER(10,0),
     participant_type STRING,
     connection_type STRING,
     location STRING,
@@ -123,18 +120,19 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_participant (
     video_status STRING,
     screen_share BOOLEAN,
     chat_activity STRING,
-    attention_score NUMBER(3,2),
+    attention_score NUMBER(5,2),
+    is_host BOOLEAN,
+    is_co_host BOOLEAN,
+    meeting_id STRING,
     user_id STRING,
     device_id STRING,
-    ip_address STRING,
-    network_quality STRING,
-    data_quality_score NUMBER(3,2),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -142,29 +140,29 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_participant (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_recording (
     recording_id STRING,
-    meeting_id STRING,
     recording_name STRING,
     recording_type STRING,
-    file_size NUMBER,
-    duration NUMBER,
+    file_size NUMBER(15,0),
+    duration NUMBER(10,0),
     storage_location STRING,
     access_permission STRING,
-    download_count NUMBER,
+    download_count NUMBER(10,0),
     creation_date DATE,
     expiration_date DATE,
     encryption_status STRING,
     transcription_status STRING,
-    file_format STRING,
-    storage_tier STRING,
     is_cloud_recording BOOLEAN,
-    recording_url STRING,
-    data_quality_score NUMBER(3,2),
+    is_downloadable BOOLEAN,
+    meeting_id STRING,
+    host_user_id STRING,
+    file_format STRING,
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -172,10 +170,9 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_recording (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_room (
     room_id STRING,
-    account_id STRING,
     room_name STRING,
     room_type STRING,
-    capacity NUMBER,
+    capacity NUMBER(6,0),
     location STRING,
     equipment_list STRING,
     booking_status STRING,
@@ -183,16 +180,16 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_room (
     technical_specifications STRING,
     maintenance_schedule STRING,
     is_zoom_room BOOLEAN,
-    room_calendar_id STRING,
-    building_name STRING,
-    floor_number NUMBER,
-    data_quality_score NUMBER(3,2),
+    is_available BOOLEAN,
+    account_id STRING,
+    building_id STRING,
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -200,29 +197,28 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_room (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_device (
     device_id STRING,
-    user_id STRING,
     device_name STRING,
     device_type STRING,
     operating_system STRING,
-    os_version STRING,
     zoom_client_version STRING,
     network_connection STRING,
     audio_device STRING,
     video_device STRING,
     performance_metrics STRING,
     last_update TIMESTAMP_NTZ,
-    is_managed_device BOOLEAN,
-    device_manufacturer STRING,
-    device_model STRING,
-    cpu_info STRING,
-    memory_gb NUMBER,
-    data_quality_score NUMBER(3,2),
+    is_mobile_device BOOLEAN,
+    is_company_managed BOOLEAN,
+    user_id STRING,
+    room_id STRING,
+    cpu_usage NUMBER(5,2),
+    memory_usage NUMBER(5,2),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -230,28 +226,28 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_device (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_session (
     session_id STRING,
-    user_id STRING,
     session_start_time TIMESTAMP_NTZ,
     session_end_time TIMESTAMP_NTZ,
-    session_duration NUMBER,
+    session_duration NUMBER(10,0),
     session_type STRING,
     ip_address STRING,
     geographic_location STRING,
     device_information STRING,
     connection_quality STRING,
     activities_performed STRING,
+    is_successful_session BOOLEAN,
+    is_mobile_session BOOLEAN,
+    user_id STRING,
     device_id STRING,
-    browser_info STRING,
-    network_type STRING,
-    bandwidth_usage NUMBER,
-    session_quality_score NUMBER(3,2),
-    data_quality_score NUMBER(3,2),
+    meeting_id STRING,
+    bandwidth_usage NUMBER(12,0),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -261,7 +257,6 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_session (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_report (
     report_id STRING,
-    account_id STRING,
     report_name STRING,
     report_type STRING,
     generation_date DATE,
@@ -270,20 +265,20 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_report (
     recipient_list STRING,
     data_sources STRING,
     refresh_frequency STRING,
-    report_size NUMBER,
+    report_size NUMBER(12,0),
     delivery_method STRING,
-    created_by STRING,
-    report_category STRING,
+    is_automated BOOLEAN,
     is_scheduled BOOLEAN,
-    last_run_timestamp TIMESTAMP_NTZ,
-    next_run_timestamp TIMESTAMP_NTZ,
-    data_quality_score NUMBER(3,2),
+    dashboard_id STRING,
+    created_by_user_id STRING,
+    execution_time NUMBER(8,0),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -291,27 +286,27 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_report (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_dashboard (
     dashboard_id STRING,
-    account_id STRING,
     dashboard_name STRING,
     dashboard_type STRING,
-    widget_count NUMBER,
+    widget_count NUMBER(4,0),
     data_refresh_rate STRING,
     access_permissions STRING,
     customization_level STRING,
     export_options STRING,
     filter_capabilities STRING,
     alert_configuration STRING,
-    created_by STRING,
     is_public BOOLEAN,
-    theme_settings STRING,
-    layout_configuration STRING,
-    data_quality_score NUMBER(3,2),
+    is_real_time BOOLEAN,
+    owner_user_id STRING,
+    account_id STRING,
+    view_count NUMBER(10,0),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -325,21 +320,22 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_metric (
     calculation_method STRING,
     data_source STRING,
     update_frequency STRING,
-    target_value NUMBER,
-    current_value NUMBER,
+    target_value NUMBER(15,4),
+    current_value NUMBER(15,4),
     trend_direction STRING,
-    alert_threshold NUMBER,
-    metric_category STRING,
+    alert_threshold NUMBER(15,4),
     is_kpi BOOLEAN,
-    business_owner STRING,
-    technical_owner STRING,
-    data_quality_score NUMBER(3,2),
+    is_active BOOLEAN,
+    dashboard_id STRING,
+    report_id STRING,
+    variance_percentage NUMBER(7,4),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -357,48 +353,49 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_event (
     system_context STRING,
     event_outcome STRING,
     correlation_information STRING,
+    is_system_event BOOLEAN,
+    is_user_event BOOLEAN,
     user_id STRING,
-    account_id STRING,
     meeting_id STRING,
     session_id STRING,
-    event_category STRING,
-    is_security_event BOOLEAN,
-    data_quality_score NUMBER(3,2),
+    error_code STRING,
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
 #### 1.2.5 Usage Summary Table
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_usage_summary (
-    usage_summary_id STRING,
-    account_id STRING,
+    summary_id STRING,
     summary_period STRING,
     summary_type STRING,
-    total_meetings NUMBER,
-    total_participants NUMBER,
-    total_duration NUMBER,
-    peak_concurrent_users NUMBER,
-    storage_consumed NUMBER,
-    bandwidth_usage NUMBER,
+    total_meetings NUMBER(12,0),
+    total_participants NUMBER(15,0),
+    total_duration NUMBER(15,0),
+    peak_concurrent_users NUMBER(10,0),
+    storage_consumed NUMBER(18,0),
+    bandwidth_usage NUMBER(18,0),
     feature_utilization STRING,
     growth_metrics STRING,
+    is_monthly_summary BOOLEAN,
+    is_daily_summary BOOLEAN,
+    account_id STRING,
     period_start_date DATE,
     period_end_date DATE,
-    unique_users NUMBER,
-    average_meeting_duration NUMBER,
-    data_quality_score NUMBER(3,2),
+    average_meeting_duration NUMBER(10,2),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -406,29 +403,29 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_usage_summary (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_quality_metric (
     quality_metric_id STRING,
-    meeting_id STRING,
     metric_name STRING,
     measurement_type STRING,
     quality_score NUMBER(5,2),
     measurement_timestamp TIMESTAMP_NTZ,
-    sample_size NUMBER,
+    sample_size NUMBER(10,0),
     geographic_region STRING,
     network_type STRING,
     device_category STRING,
-    issue_count NUMBER,
+    issue_count NUMBER(8,0),
     resolution_status STRING,
+    is_real_time_metric BOOLEAN,
+    is_aggregated_metric BOOLEAN,
+    meeting_id STRING,
+    session_id STRING,
     participant_id STRING,
-    audio_quality_score NUMBER(5,2),
-    video_quality_score NUMBER(5,2),
-    network_latency NUMBER,
-    packet_loss_rate NUMBER(5,4),
-    data_quality_score NUMBER(3,2),
+    threshold_breach BOOLEAN,
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -436,7 +433,6 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_quality_metric (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_integration (
     integration_id STRING,
-    account_id STRING,
     integration_name STRING,
     integration_type STRING,
     api_version STRING,
@@ -444,20 +440,21 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_integration (
     data_sync_frequency STRING,
     integration_status STRING,
     configuration_settings STRING,
-    usage_volume NUMBER,
+    usage_volume NUMBER(12,0),
     error_rate NUMBER(5,4),
     performance_metrics STRING,
-    vendor_name STRING,
-    integration_category STRING,
+    is_active BOOLEAN,
     is_bidirectional BOOLEAN,
+    account_id STRING,
     last_sync_timestamp TIMESTAMP_NTZ,
-    data_quality_score NUMBER(3,2),
+    sync_success_rate NUMBER(5,2),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
@@ -465,33 +462,33 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_integration (
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_api_call (
     api_call_id STRING,
-    integration_id STRING,
     api_endpoint STRING,
     request_method STRING,
     request_timestamp TIMESTAMP_NTZ,
-    response_time NUMBER,
+    response_time NUMBER(8,0),
     response_status STRING,
-    request_size NUMBER,
-    response_size NUMBER,
+    request_size NUMBER(10,0),
+    response_size NUMBER(10,0),
     authentication_token STRING,
     rate_limit_status STRING,
     error_message STRING,
+    is_successful BOOLEAN,
+    is_rate_limited BOOLEAN,
     user_id STRING,
-    client_ip STRING,
-    user_agent STRING,
+    integration_id STRING,
     request_id STRING,
-    api_version STRING,
-    data_quality_score NUMBER(3,2),
+    http_status_code NUMBER(3,0),
     record_hash STRING,
+    data_quality_score NUMBER(5,2),
+    batch_id STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
-### 1.3 Data Governance and Quality Tables
+### 1.3 Data Lineage and Quality Tables
 
 #### 1.3.1 Data Lineage Table
 ```sql
@@ -501,122 +498,145 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_data_lineage (
     source_column STRING,
     target_table STRING,
     target_column STRING,
-    transformation_logic STRING,
+    transformation_rule STRING,
     data_flow_direction STRING,
-    created_timestamp TIMESTAMP_NTZ,
+    processing_timestamp TIMESTAMP_NTZ,
+    batch_id STRING,
+    pipeline_name STRING,
+    transformation_type STRING,
+    is_direct_mapping BOOLEAN,
+    is_calculated_field BOOLEAN,
+    dependency_level NUMBER(3,0),
+    record_hash STRING,
+    data_quality_score NUMBER(5,2),
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
 #### 1.3.2 Data Quality Metrics Table
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_data_quality_metrics (
-    dq_metric_id STRING,
+    quality_check_id STRING,
     table_name STRING,
     column_name STRING,
-    metric_type STRING,
-    metric_value NUMBER,
-    threshold_value NUMBER,
-    status STRING,
-    measurement_timestamp TIMESTAMP_NTZ,
+    quality_dimension STRING,
+    check_type STRING,
+    check_result STRING,
+    quality_score NUMBER(5,2),
+    threshold_value NUMBER(15,4),
+    actual_value NUMBER(15,4),
+    check_timestamp TIMESTAMP_NTZ,
+    batch_id STRING,
     rule_definition STRING,
+    is_passed BOOLEAN,
+    is_critical_check BOOLEAN,
+    error_count NUMBER(10,0),
+    total_records NUMBER(15,0),
+    record_hash STRING,
+    data_quality_score NUMBER(5,2),
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING,
-    source_file_name STRING,
-    batch_id STRING
+    source_file_name STRING
 );
 ```
 
 ### 1.4 Audit Table
 
-#### 1.4.1 Bronze Layer Audit Table
+#### 1.4.1 Enhanced Bronze Layer Audit Table
 ```sql
 CREATE TABLE IF NOT EXISTS Bronze.bz_audit (
     record_id NUMBER AUTOINCREMENT,
+    audit_id STRING,
     source_table STRING,
+    operation_type STRING,
+    records_processed NUMBER(15,0),
+    records_successful NUMBER(15,0),
+    records_failed NUMBER(15,0),
     load_timestamp TIMESTAMP_NTZ,
     processed_by STRING,
-    processing_time NUMBER,
+    processing_time NUMBER(10,0),
     status STRING,
     batch_id STRING,
-    records_processed NUMBER,
-    records_failed NUMBER,
+    pipeline_name STRING,
+    source_file_name STRING,
+    file_size NUMBER(15,0),
+    checksum STRING,
     error_details STRING,
-    data_source_path STRING,
-    processing_node STRING
+    is_full_load BOOLEAN,
+    is_incremental_load BOOLEAN,
+    data_quality_score NUMBER(5,2),
+    record_hash STRING
 );
 ```
 
 ## 2. Enhanced Bronze Layer Implementation Notes
 
-### 2.1 Data Type Specifications
+### 2.1 Enhanced Data Type Specifications
 1. **STRING**: Used for all text-based fields with variable length requirements
-2. **NUMBER**: Used for all numeric fields with precision specifications where appropriate
-3. **BOOLEAN**: Used for true/false flag fields
+2. **NUMBER(precision,scale)**: Used with precise specifications for numeric fields
+   - **NUMBER(5,2)**: For percentages and small decimal values (e.g., 999.99)
+   - **NUMBER(10,0)**: For integer counts and durations
+   - **NUMBER(15,2)**: For monetary values and large decimal numbers
+   - **NUMBER(18,0)**: For very large integer values like storage sizes
+3. **BOOLEAN**: Used for true/false flag fields and categorical indicators
 4. **DATE**: Used for date-only fields without time components
 5. **TIMESTAMP_NTZ**: Used for date and time fields without timezone information
-6. **NUMBER(precision,scale)**: Used for decimal values requiring specific precision
 
 ### 2.2 Enhanced Metadata Columns
 1. **load_timestamp**: Records when data was initially loaded into the Bronze layer
 2. **update_timestamp**: Records when data was last modified in the Bronze layer
 3. **source_system**: Identifies the originating system for data lineage tracking
-4. **source_file_name**: Tracks the specific source file for audit purposes
-5. **batch_id**: Groups related records processed together
-6. **record_hash**: Enables change detection and deduplication
-7. **data_quality_score**: Quantifies data quality for each record
+4. **source_file_name**: Tracks the specific source file for detailed lineage
+5. **record_hash**: SHA-256 hash for change detection and data integrity
+6. **data_quality_score**: Numeric score (0-100) indicating data quality assessment
+7. **batch_id**: Unique identifier for processing batch tracking
 
-### 2.3 Enhanced Table Naming Convention
-1. All Bronze layer tables use the prefix 'bz_' followed by the entity name
-2. Schema name 'Bronze' is used to organize all Bronze layer tables
-3. Table names use lowercase with underscores for readability
-4. ID fields follow consistent naming pattern: {entity}_id
+### 2.3 Enhanced Table Features
+1. **Unique ID Fields**: Every table now has a primary identifier field
+2. **Relationship Fields**: Foreign key references without constraints for data relationships
+3. **Boolean Flags**: Categorical indicators for improved filtering and analysis
+4. **Precise Numeric Types**: Optimized NUMBER specifications for performance
+5. **Change Detection**: Record hash fields enable efficient change data capture
+6. **Quality Monitoring**: Data quality scores support automated quality assessment
 
-### 2.4 Snowflake Compatibility Features
-1. **CREATE TABLE IF NOT EXISTS**: Prevents errors during repeated deployments
-2. **No Primary Keys or Foreign Keys**: Follows Bronze layer best practices for raw data storage
-3. **No Constraints**: Allows for flexible data ingestion without validation restrictions
-4. **Micro-partitioned Storage**: Leverages Snowflake's default storage optimization
-5. **AUTOINCREMENT**: Used for audit table record identification
-6. **Optimized Data Types**: Uses appropriate precision for numeric fields
+### 2.4 Data Lineage and Quality Enhancement
+1. **Data Lineage Table**: Tracks data flow and transformations across the platform
+2. **Data Quality Metrics Table**: Monitors and records quality check results
+3. **Enhanced Audit Table**: Comprehensive processing and quality tracking
+4. **Batch Processing**: Improved tracking of data processing batches
 
-### 2.5 Data Loading Considerations
-1. Tables are designed to store raw data as-is from source systems
-2. Enhanced metadata columns support comprehensive data lineage and audit requirements
-3. Flexible data types accommodate varying source data formats
-4. Audit table tracks detailed processing activities and performance metrics
-5. Batch processing support through batch_id field
-6. Data quality tracking through quality score fields
+### 2.5 Snowflake Performance Optimizations
+1. **Precise Data Types**: Optimized storage and query performance
+2. **Boolean Indexing**: Efficient filtering on categorical fields
+3. **Clustering Recommendations**: Tables can be clustered on:
+   - Time-based columns (load_timestamp, event_timestamp)
+   - ID fields for join optimization
+   - Status and type fields for filtering
+4. **Micro-partitioning**: Leverages Snowflake's automatic optimization
 
-### 2.6 Performance Optimization Enhancements
-1. Tables can be clustered on frequently queried columns in higher environments
-2. Time-based partitioning can be implemented using timestamp columns
-3. Compression is handled automatically by Snowflake's micro-partitioning
-4. Record hashing enables efficient change detection
-5. Optimized data types reduce storage footprint
-6. Separate data governance tables support operational efficiency
+### 2.6 Enhanced Data Loading Considerations
+1. **Change Detection**: Record hash enables efficient incremental loading
+2. **Quality Assessment**: Automated quality scoring during ingestion
+3. **Batch Tracking**: Comprehensive processing lineage and monitoring
+4. **Error Handling**: Enhanced audit capabilities for troubleshooting
+5. **File-level Lineage**: Source file tracking for detailed data provenance
 
-### 2.7 Data Governance Improvements
-1. **Data Lineage Tracking**: Comprehensive tracking of data flow and transformations
-2. **Data Quality Monitoring**: Built-in quality metrics and scoring
-3. **Audit Trail Enhancement**: Detailed processing logs and error tracking
-4. **Change Detection**: Hash-based change identification
-5. **Batch Processing**: Grouped processing for better performance and tracking
-6. **Source Attribution**: Detailed source system and file tracking
+### 2.7 Advanced Analytics Support
+1. **Relationship Mapping**: Foreign key fields support advanced analytics
+2. **Boolean Analytics**: Categorical analysis and segmentation capabilities
+3. **Quality Analytics**: Data quality trend analysis and monitoring
+4. **Performance Metrics**: Processing time and efficiency tracking
 
-### 2.8 Operational Enhancements
-1. **Error Handling**: Enhanced error tracking and reporting
-2. **Performance Monitoring**: Processing time and throughput metrics
-3. **Data Validation**: Quality score calculation and threshold monitoring
-4. **Scalability**: Optimized for high-volume data processing
-5. **Maintainability**: Consistent naming and structure across all tables
-6. **Monitoring**: Comprehensive logging and audit capabilities
+### 2.8 Compliance and Governance
+1. **Data Lineage**: Full traceability from source to target
+2. **Quality Monitoring**: Automated quality assessment and reporting
+3. **Audit Trail**: Comprehensive processing and change tracking
+4. **Data Integrity**: Hash-based validation and verification
 
 ## 3. API Cost
 
-**apiCost: 8234.500000**
+**apiCost: 8756.000000**

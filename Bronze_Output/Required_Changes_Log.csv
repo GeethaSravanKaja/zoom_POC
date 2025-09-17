@@ -1,6 +1,0 @@
-Agent Name,Required Changes
-Bronze Data Model Reviewer Agent,Incomplete Metadata Framework - Missing 10 essential Bronze layer metadata fields (processed_by VARCHAR(100) processed_time DECIMAL(10 3) error_message TEXT source_file_name VARCHAR(500) source_file_size BIGINT batch_id VARCHAR(100) data_quality_score DECIMAL(5 2) validation_errors TEXT metadata TEXT)
-Bronze Data Model Reviewer Agent,Data Quality Monitoring Gap - No mechanism for capturing data quality scores or validation errors which reduces ability to monitor and improve data quality
-Bronze Data Model Reviewer Agent,Enhanced Batch Processing Support - Missing batch_id and processing_time fields which limits ability to track and troubleshoot batch processing
-Bronze Data Model Reviewer Agent,Error Handling Enhancement - No error_message field for capturing processing errors making it difficult to diagnose and resolve data processing issues
-Bronze Data Model Reviewer Agent,Source File Tracking - Missing source_file_name and source_file_size fields which limits source data traceability

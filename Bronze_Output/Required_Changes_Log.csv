@@ -1,0 +1,4 @@
+Agent Name,Required Changes
+Bronze Layer Logical Data Model Agent,API costs removed from Bz_Billing_Transaction table
+Bronze Layer Physical Data Model Agent,API costs removed from billing transaction table
+Bronze Data Model Reviewer Agent,Missing Documentation: Table and column comments absent; Missing Advanced Source Tracking: source_record_id source_batch_id missing; Performance Optimization: No clustering keys defined for large analytical tables

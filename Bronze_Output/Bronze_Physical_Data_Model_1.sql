@@ -1,7 +1,7 @@
 _____________________________________________
 ## *Author*: AAVA
 ## *Created on*: 
-## *Description*: Comprehensive Bronze Layer Physical Data Model for Zoom Platform Analytics Systems with Snowflake-compatible DDL scripts
+## *Description*: Comprehensive Bronze Layer Physical Data Model for Zoom Platform Analytics Systems with Snowflake SQL compatibility
 ## *Version*: 1 
 ## *Updated on*: 
 _____________________________________________
@@ -9,7 +9,7 @@ _____________________________________________
 -- =====================================================
 -- BRONZE LAYER PHYSICAL DATA MODEL
 -- Zoom Platform Analytics Systems
--- Snowflake-Compatible DDL Scripts
+-- Compatible with Snowflake SQL
 -- =====================================================
 
 -- 1. USER ACCOUNT TABLE
@@ -100,11 +100,11 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_participant (
     total_attendance_duration NUMBER,
     participant_role STRING,
     audio_connection_type STRING,
-    video_status STRING,
+    video_status BOOLEAN,
     geographic_location STRING,
     connection_quality_rating NUMBER,
     interaction_count NUMBER,
-    screen_share_usage STRING,
+    screen_share_usage BOOLEAN,
     breakout_room_assignment STRING,
     -- Metadata columns
     load_timestamp TIMESTAMP_NTZ,
@@ -176,7 +176,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_screen_share_session (
     application_name STRING,
     annotation_usage BOOLEAN,
     remote_control_granted BOOLEAN,
-    share_quality STRING,
+    share_quality NUMBER,
     viewer_count NUMBER,
     -- Metadata columns
     load_timestamp TIMESTAMP_NTZ,
@@ -274,7 +274,7 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_security_event (
     source_system STRING
 );
 
--- 16. BILLING TRANSACTION TABLE (API costs removed as requested)
+-- 16. BILLING TRANSACTION TABLE
 CREATE TABLE IF NOT EXISTS Bronze.bz_billing_transaction (
     transaction_type STRING,
     transaction_amount NUMBER,
@@ -300,16 +300,5 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_audit_table (
 );
 
 -- =====================================================
--- BRONZE LAYER DDL SCRIPT SUMMARY
+-- END OF BRONZE LAYER PHYSICAL DATA MODEL
 -- =====================================================
--- 1. All tables use Snowflake-compatible data types
--- 2. No primary keys, foreign keys, or constraints included
--- 3. All table names prefixed with 'bz_' in Bronze schema
--- 4. Metadata columns included for data lineage tracking
--- 5. CREATE TABLE IF NOT EXISTS syntax used
--- 6. API cost fields removed from billing transaction table
--- 7. Audit table included for process tracking
--- =====================================================
-
--- API Cost Information
--- apiCost: 0.000000

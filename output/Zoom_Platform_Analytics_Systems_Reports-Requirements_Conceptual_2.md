@@ -1,7 +1,6 @@
 _____________________________________________
 ## *Author*: AAVA
 ## *Created on*: 
-## *Description*: Conceptual Data Model for Zoom Platform Analytics Systems Reports
+## *Description*: Enhanced Conceptual Data Model for Zoom Platform Analytics Systems Reports
 ## *Version*: 2
-## *Updated on*: 
-## *Changes*: Added new entities (Dashboard
+## *Changes*: Enhanced entity relationships

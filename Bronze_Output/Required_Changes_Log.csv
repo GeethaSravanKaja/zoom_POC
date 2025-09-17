@@ -1,2 +1,0 @@
-Agent Name,Required Changes
-Bronze Data Model Reviewer Agent,"Missing referential integrity constraints, Limited semi-structured data support, No incremental loading strategy, Insufficient PII protection, Missing clustering strategy for performance optimization, No row-level security policies, Missing data retention policies, No partitioning strategy for scalability"

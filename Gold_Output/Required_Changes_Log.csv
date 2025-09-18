@@ -2,3 +2,4 @@ Agent Name,Required Changes
 Gold Data Model Reviewer,Fix DDL execution failures remove foreign key constraints add missing fact tables complete Silver layer integration
 Gold Layer Physical Data Model Version 3 - Enhanced Edition,Mode 2 workflow implementation for enhanced data model structure
 Gold Data Model Reviewer - Zoom Platform Analytics Systems Version 3,Physical data model enhancements and SQL file generation
+Gold Data Model Reviewer - Zoom Platform Analytics Systems,Add missing conceptual entities: Recording Asset Device Connection Chat Communication Screen Share Session Breakout Room Quality Metrics Engagement Metrics Resource Utilization Security Event; implement KPI support tables for Platform Performance and Operational KPIs; complete Silver layer utilization with derived metrics; establish data governance with PII classification and retention policies; optimize performance with partitioning strategy and materialized views

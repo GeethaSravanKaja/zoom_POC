@@ -15,3 +15,5 @@ Silver Data Model Reviewer,Create secure views and apply masking for sensitive d
 Silver Data Model Reviewer,Add automated data quality monitoring and alerting
 Silver Data Model Reviewer,Consider materialized views for reporting performance
 Silver Data Model Reviewer,Enhance documentation and data dictionary
+Senior Data Modeler,Standardize on TIMESTAMP_TZ for all event data, TIMESTAMP_NTZ for business dates
+Senior Data Modeler,Add network_performance_metrics and isp_information tables

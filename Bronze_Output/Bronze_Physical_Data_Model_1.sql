@@ -1,296 +1,134 @@
 _____________________________________________
 ## *Author*: AAVA
 ## *Created on*: 
-## *Description*: Comprehensive Bronze Layer Physical Data Model for Zoom Platform Analytics Systems with Snowflake SQL compatibility
+## *Description*: Bronze Layer Physical Data Model for Zoom Platform Analytics Systems with Snowflake-compatible DDL scripts
 ## *Version*: 1 
 ## *Updated on*: 
 _____________________________________________
 
--- =====================================================
--- BRONZE LAYER PHYSICAL DATA MODEL
--- Zoom Platform Analytics Systems
--- Compatible with Snowflake SQL
--- =====================================================
+# Bronze Layer Physical Data Model - Zoom Platform Analytics Systems
 
--- 1. USER ACCOUNT TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_user_account (
-    user_display_name STRING,
-    email_address STRING,
-    account_status STRING,
-    license_type STRING,
-    department_name STRING,
-    job_title STRING,
-    time_zone STRING,
-    account_creation_date DATE,
-    last_login_date DATE,
-    profile_picture_url STRING,
-    phone_number STRING,
-    language_preference STRING,
-    -- Metadata columns
+## 1. Bronze Layer DDL Scripts
+
+This document contains the complete DDL scripts for the Bronze layer tables in the Medallion architecture, designed for Snowflake compatibility. All tables store raw data as-is with additional metadata columns for data lineage and processing tracking.
+
+### 1.1 Users Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_users (
+    user_id STRING,
+    user_name STRING,
+    email STRING,
+    company STRING,
+    plan_type STRING,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING
 );
+```
 
--- 2. ORGANIZATION TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_organization (
-    organization_name STRING,
-    industry_classification STRING,
-    organization_size STRING,
-    primary_contact_email STRING,
-    billing_address STRING,
-    account_manager_name STRING,
-    contract_start_date DATE,
-    contract_end_date DATE,
-    maximum_user_limit NUMBER,
-    storage_quota NUMBER,
-    security_policy_level STRING,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 3. MEETING SESSION TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_session (
-    meeting_title STRING,
-    meeting_type STRING,
-    scheduled_start_time TIMESTAMP_NTZ,
-    actual_start_time TIMESTAMP_NTZ,
-    scheduled_duration NUMBER,
-    actual_duration NUMBER,
-    host_name STRING,
-    meeting_password_required BOOLEAN,
-    waiting_room_enabled BOOLEAN,
-    recording_permission STRING,
-    maximum_participants NUMBER,
+### 1.2 Meetings Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_meetings (
+    meeting_id STRING,
+    host_id STRING,
     meeting_topic STRING,
-    meeting_status STRING,
-    -- Metadata columns
+    start_time TIMESTAMP_NTZ,
+    end_time TIMESTAMP_NTZ,
+    duration_minutes NUMBER,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING
 );
+```
 
--- 4. WEBINAR EVENT TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_webinar_event (
-    webinar_title STRING,
-    event_description STRING,
-    registration_required BOOLEAN,
-    maximum_attendee_capacity NUMBER,
-    actual_attendee_count NUMBER,
-    registration_count NUMBER,
-    presenter_names STRING,
-    event_category STRING,
-    public_event_indicator BOOLEAN,
-    qa_session_enabled BOOLEAN,
-    polling_enabled BOOLEAN,
-    followup_survey_sent BOOLEAN,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 5. MEETING PARTICIPANT TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_meeting_participant (
-    participant_name STRING,
+### 1.3 Participants Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_participants (
+    participant_id STRING,
+    meeting_id STRING,
+    user_id STRING,
     join_time TIMESTAMP_NTZ,
     leave_time TIMESTAMP_NTZ,
-    total_attendance_duration NUMBER,
-    participant_role STRING,
-    audio_connection_type STRING,
-    video_status BOOLEAN,
-    geographic_location STRING,
-    connection_quality_rating NUMBER,
-    interaction_count NUMBER,
-    screen_share_usage BOOLEAN,
-    breakout_room_assignment STRING,
-    -- Metadata columns
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING
 );
+```
 
--- 6. RECORDING ASSET TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_recording_asset (
-    recording_title STRING,
-    recording_type STRING,
-    file_size NUMBER,
-    recording_duration NUMBER,
-    recording_quality STRING,
-    storage_location STRING,
-    access_permission_level STRING,
-    download_permission BOOLEAN,
-    expiration_date DATE,
-    view_count NUMBER,
-    transcription_available BOOLEAN,
-    recording_status STRING,
-    -- Metadata columns
+### 1.4 Feature Usage Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_feature_usage (
+    usage_id STRING,
+    meeting_id STRING,
+    feature_name STRING,
+    usage_count NUMBER,
+    usage_date DATE,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING
 );
+```
 
--- 7. DEVICE CONNECTION TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_device_connection (
-    device_type STRING,
-    operating_system STRING,
-    application_version STRING,
-    network_connection_type STRING,
-    bandwidth_utilization NUMBER,
-    cpu_usage_percentage NUMBER,
-    memory_usage NUMBER,
-    audio_quality_score NUMBER,
-    video_quality_score NUMBER,
-    connection_stability_rating NUMBER,
-    latency_measurement NUMBER,
-    -- Metadata columns
+### 1.5 Webinars Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_webinars (
+    webinar_id STRING,
+    host_id STRING,
+    webinar_topic STRING,
+    start_time TIMESTAMP_NTZ,
+    end_time TIMESTAMP_NTZ,
+    registrants NUMBER,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING
 );
+```
 
--- 8. CHAT COMMUNICATION TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_chat_communication (
-    message_content STRING,
-    message_timestamp TIMESTAMP_NTZ,
-    sender_name STRING,
-    recipient_scope STRING,
-    message_type STRING,
-    file_attachment_present BOOLEAN,
-    message_length NUMBER,
-    reaction_count NUMBER,
-    reply_thread_indicator BOOLEAN,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 9. SCREEN SHARE SESSION TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_screen_share_session (
-    share_type STRING,
-    share_duration NUMBER,
-    presenter_name STRING,
-    application_name STRING,
-    annotation_usage BOOLEAN,
-    remote_control_granted BOOLEAN,
-    share_quality NUMBER,
-    viewer_count NUMBER,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 10. BREAKOUT ROOM TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_breakout_room (
-    room_name STRING,
-    room_capacity NUMBER,
-    actual_participant_count NUMBER,
-    room_duration NUMBER,
-    host_assignment STRING,
-    room_topic STRING,
-    return_to_main_room_count NUMBER,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 11. USAGE ANALYTICS TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_usage_analytics (
-    measurement_period STRING,
-    total_meeting_count NUMBER,
-    total_meeting_minutes NUMBER,
-    unique_user_count NUMBER,
-    average_meeting_duration NUMBER,
-    peak_concurrent_users NUMBER,
-    platform_utilization_rate NUMBER,
-    feature_adoption_rate NUMBER,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 12. QUALITY METRICS TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_quality_metrics (
-    audio_quality_average NUMBER,
-    video_quality_average NUMBER,
-    connection_success_rate NUMBER,
-    average_latency NUMBER,
-    packet_loss_rate NUMBER,
-    call_drop_rate NUMBER,
-    user_satisfaction_score NUMBER,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 13. ENGAGEMENT METRICS TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_engagement_metrics (
-    average_participation_rate NUMBER,
-    chat_message_volume NUMBER,
-    screen_share_frequency NUMBER,
-    reaction_usage_count NUMBER,
-    qa_participation_rate NUMBER,
-    poll_response_rate NUMBER,
-    attention_score NUMBER,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 14. RESOURCE UTILIZATION TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_resource_utilization (
-    storage_consumption NUMBER,
-    bandwidth_usage NUMBER,
-    server_processing_load NUMBER,
-    concurrent_session_capacity NUMBER,
-    peak_usage_time TIMESTAMP_NTZ,
-    resource_efficiency_rating NUMBER,
-    -- Metadata columns
-    load_timestamp TIMESTAMP_NTZ,
-    update_timestamp TIMESTAMP_NTZ,
-    source_system STRING
-);
-
--- 15. SECURITY EVENT TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_security_event (
-    event_type STRING,
-    event_timestamp TIMESTAMP_NTZ,
-    user_involved STRING,
-    event_severity_level STRING,
-    event_description STRING,
+### 1.6 Support Tickets Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_support_tickets (
+    ticket_id STRING,
+    user_id STRING,
+    ticket_type STRING,
     resolution_status STRING,
-    compliance_impact STRING,
-    -- Metadata columns
+    open_date DATE,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING
 );
+```
 
--- 16. BILLING TRANSACTION TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_billing_transaction (
-    transaction_type STRING,
-    transaction_amount NUMBER,
-    transaction_date DATE,
-    billing_period STRING,
-    payment_method STRING,
-    transaction_status STRING,
-    invoice_number STRING,
-    -- Metadata columns
+### 1.7 Licenses Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_licenses (
+    license_id STRING,
+    license_type STRING,
+    assigned_to_user_id STRING,
+    start_date DATE,
+    end_date DATE,
     load_timestamp TIMESTAMP_NTZ,
     update_timestamp TIMESTAMP_NTZ,
     source_system STRING
 );
+```
 
--- 17. AUDIT TABLE
-CREATE TABLE IF NOT EXISTS Bronze.bz_audit_table (
+### 1.8 Billing Events Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_billing_events (
+    event_id STRING,
+    user_id STRING,
+    event_type STRING,
+    amount NUMBER(10,2),
+    event_date DATE,
+    load_timestamp TIMESTAMP_NTZ,
+    update_timestamp TIMESTAMP_NTZ,
+    source_system STRING
+);
+```
+
+### 1.9 Audit Table
+```sql
+CREATE TABLE IF NOT EXISTS Bronze.bz_audit_log (
     record_id NUMBER AUTOINCREMENT,
     source_table STRING,
     load_timestamp TIMESTAMP_NTZ,
@@ -298,7 +136,109 @@ CREATE TABLE IF NOT EXISTS Bronze.bz_audit_table (
     processing_time NUMBER,
     status STRING
 );
+```
 
--- =====================================================
--- END OF BRONZE LAYER PHYSICAL DATA MODEL
--- =====================================================
+## 2. Data Type Mappings
+
+The following data type conversions have been applied for Snowflake compatibility:
+
+### 2.1 Source to Snowflake Data Type Mapping
+- **VARCHAR(n)** → **STRING**
+- **DATETIME** → **TIMESTAMP_NTZ**
+- **INT** → **NUMBER**
+- **DECIMAL(10,2)** → **NUMBER(10,2)**
+- **DATE** → **DATE**
+
+### 2.2 Metadata Columns Added
+All Bronze layer tables include the following metadata columns:
+- **load_timestamp** (TIMESTAMP_NTZ) - Timestamp when the record was loaded into Bronze layer
+- **update_timestamp** (TIMESTAMP_NTZ) - Timestamp when the record was last updated
+- **source_system** (STRING) - Identifier of the source system providing the data
+
+## 3. Bronze Layer Design Principles
+
+### 3.1 Snowflake Best Practices Applied
+1. **No Constraints**: Primary keys, foreign keys, and other constraints are not included as per Bronze layer best practices
+2. **Micro-partitioned Storage**: Default Snowflake storage format is used for optimal performance
+3. **CREATE TABLE IF NOT EXISTS**: Ensures idempotent script execution
+4. **Appropriate Data Types**: Snowflake-native data types are used for optimal performance
+5. **Schema Naming**: All tables use the Bronze schema with 'bz_' prefix
+
+### 3.2 Raw Data Storage
+- Tables store data as-is from source systems
+- No data transformations or business logic applied
+- All source columns preserved with appropriate data type conversions
+- Nullable fields maintained as nullable in Bronze layer
+
+### 3.3 Data Lineage and Auditing
+- Audit table tracks all data processing activities
+- Metadata columns enable data lineage tracking
+- Processing timestamps support data quality monitoring
+- Source system identification enables multi-source data integration
+
+## 4. Table Descriptions
+
+### 4.1 Bronze.bz_users
+**Purpose**: Stores raw user account information from the Zoom platform
+**Source Fields**: user_id, user_name, email, company, plan_type
+**Key Characteristics**: Contains all user profile and subscription information
+
+### 4.2 Bronze.bz_meetings
+**Purpose**: Stores raw meeting session data including timing and host information
+**Source Fields**: meeting_id, host_id, meeting_topic, start_time, end_time, duration_minutes
+**Key Characteristics**: Captures all meeting metadata and duration metrics
+
+### 4.3 Bronze.bz_participants
+**Purpose**: Stores raw participant data for meeting attendance tracking
+**Source Fields**: participant_id, meeting_id, user_id, join_time, leave_time
+**Key Characteristics**: Enables participant-level analytics and engagement tracking
+
+### 4.4 Bronze.bz_feature_usage
+**Purpose**: Stores raw feature utilization data during meetings
+**Source Fields**: usage_id, meeting_id, feature_name, usage_count, usage_date
+**Key Characteristics**: Tracks adoption and usage patterns of platform features
+
+### 4.5 Bronze.bz_webinars
+**Purpose**: Stores raw webinar event data including registration information
+**Source Fields**: webinar_id, host_id, webinar_topic, start_time, end_time, registrants
+**Key Characteristics**: Captures large-scale event metrics and attendance data
+
+### 4.6 Bronze.bz_support_tickets
+**Purpose**: Stores raw customer support interaction data
+**Source Fields**: ticket_id, user_id, ticket_type, resolution_status, open_date
+**Key Characteristics**: Enables support analytics and customer satisfaction tracking
+
+### 4.7 Bronze.bz_licenses
+**Purpose**: Stores raw license assignment and management data
+**Source Fields**: license_id, license_type, assigned_to_user_id, start_date, end_date
+**Key Characteristics**: Tracks license utilization and subscription management
+
+### 4.8 Bronze.bz_billing_events
+**Purpose**: Stores raw billing and financial transaction data
+**Source Fields**: event_id, user_id, event_type, amount, event_date
+**Key Characteristics**: Enables financial analytics and revenue tracking
+
+### 4.9 Bronze.bz_audit_log
+**Purpose**: Tracks all data processing activities and system operations
+**Source Fields**: record_id, source_table, load_timestamp, processed_by, processing_time, status
+**Key Characteristics**: Provides comprehensive audit trail for data governance
+
+## 5. Implementation Notes
+
+### 5.1 Deployment Instructions
+1. Execute DDL scripts in the order provided
+2. Ensure Bronze schema exists before table creation
+3. Verify Snowflake warehouse is active and properly sized
+4. Test table creation with sample data loads
+
+### 5.2 Data Loading Considerations
+- Use Snowflake COPY INTO commands for bulk data loading
+- Implement error handling for data quality issues
+- Set up monitoring for load performance and success rates
+- Configure appropriate warehouse sizing for expected data volumes
+
+### 5.3 Maintenance Requirements
+- Regular monitoring of table growth and performance
+- Periodic review of metadata column usage
+- Audit log cleanup based on retention policies
+- Performance optimization through clustering if needed for large tables

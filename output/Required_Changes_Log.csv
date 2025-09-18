@@ -9,3 +9,9 @@ Data Modeler,Add support for real-time streaming data ingestion to enable live m
 Constraints Analyst,Define business rules for handling duplicate user accounts across different authentication methods
 Data Modeler,Implement data masking and anonymization rules for sensitive user information in analytics reporting
 Constraints Analyst,Add performance optimization constraints for large-scale meeting data queries and aggregations
+Silver Data Model Reviewer,Add SCD Type 2 fields to dimension tables for historical tracking
+Silver Data Model Reviewer,Implement check constraints for key business rules
+Silver Data Model Reviewer,Create secure views and apply masking for sensitive data
+Silver Data Model Reviewer,Add automated data quality monitoring and alerting
+Silver Data Model Reviewer,Consider materialized views for reporting performance
+Silver Data Model Reviewer,Enhance documentation and data dictionary

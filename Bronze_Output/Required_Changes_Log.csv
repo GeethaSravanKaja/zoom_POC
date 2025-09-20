@@ -1,1 +1,9 @@
 Agent Name,Required Changes
+Bronze Data Model Reviewer,Add explicit PRIMARY KEY constraints to all tables using ID fields
+Bronze Data Model Reviewer,Implement foreign key constraints to maintain referential integrity
+Bronze Data Model Reviewer,Add precision and scale to NUMBER fields and length constraints to STRING fields
+Bronze Data Model Reviewer,Add clustering keys for frequently queried columns (load_timestamp user_id meeting_id)
+Bronze Data Model Reviewer,Implement NOT NULL constraints on critical fields like ID columns and timestamps
+Bronze Data Model Reviewer,Add comprehensive column-level documentation and comments
+Bronze Data Model Reviewer,Define and implement data retention strategies
+Bronze Data Model Reviewer,Add data quality monitoring capabilities

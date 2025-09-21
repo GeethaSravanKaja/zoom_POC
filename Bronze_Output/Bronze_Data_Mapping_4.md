@@ -1,393 +1,169 @@
 _____________________________________________
 ## *Author*: AAVA
 ## *Created on*: 
-## *Description*: Bronze layer data mapping for Zoom Platform Analytics Systems - comprehensive version aligned with actual source table structure
-## *Version*: 4
+## *Description*: Bronze layer data mapping for Zoom Platform Analytics Systems based on actual source data structure and Bronze DDL scripts
+## *Version*: 4 
 ## *Updated on*: 
 _____________________________________________
 
-# Bronze Layer Data Mapping - Version 4
-## Zoom Platform Analytics Systems
+# Bronze Layer Data Mapping - Zoom Platform Analytics Systems
 
-### Document Metadata
+## Document Information
 - **Author**: AAVA
-- **Version**: 4.0
+- **Version**: 4
 - **Date**: 2024
-- **Description**: Comprehensive Bronze Layer Data Mapping for Zoom Platform Analytics Systems implementing Medallion Architecture in Snowflake
-- **Target Platform**: Snowflake
 - **Architecture**: Medallion (Bronze Layer)
-- **Data Sources**: Zoom Platform Analytics Systems (8 core tables)
+- **Platform**: Snowflake
+- **Source System**: Zoom Platform Analytics Systems
 
----
+## Overview
+This document provides comprehensive data mapping for the Bronze layer in the Medallion architecture implementation for Zoom Platform Analytics Systems. The Bronze layer serves as the raw data ingestion layer, preserving the original structure while adding essential metadata for data lineage and governance.
 
-## Executive Summary
-
-This document defines the comprehensive data mapping strategy for the Bronze layer implementation in the Medallion architecture for Zoom Platform Analytics Systems. The Bronze layer serves as the raw data ingestion layer, preserving original data structure while adding essential metadata for data lineage and governance.
-
-### Key Objectives:
-- Establish 1:1 mapping between source systems and Bronze layer tables
-- Preserve raw data integrity and structure
-- Implement comprehensive metadata management
-- Enable efficient data ingestion and validation processes
-- Support downstream Silver and Gold layer transformations
-
----
-
-## Source System Overview
-
-The Zoom Platform Analytics Systems consists of 8 core operational tables:
-
-1. **Users** - User account information and plan details
-2. **Meetings** - Meeting session data and metadata
-3. **Participants** - Meeting participation tracking
-4. **Feature_Usage** - Feature utilization metrics
-5. **Webinars** - Webinar session information
-6. **Support_Tickets** - Customer support interactions
-7. **Licenses** - License management and assignments
-8. **Billing_Events** - Billing and payment events
-
----
-
-## Bronze Layer Architecture
-
-### Design Principles
-- **Raw Data Preservation**: Maintain original data structure and values
-- **Metadata Enrichment**: Add load timestamps and source system tracking
-- **Data Lineage**: Enable full traceability from source to Bronze
-- **Scalability**: Support high-volume data ingestion
-- **Governance**: Implement data quality and validation frameworks
-
-### Naming Convention
-- Bronze tables prefixed with `Bz_`
-- Source field names preserved where possible
-- Snowflake-compatible naming standards applied
-
----
-
-## Comprehensive Data Mapping Table
+## Data Mapping Table
 
 | Target Layer | Target Table | Target Field | Source Layer | Source Table | Source Field | Transformation Rule |
-|--------------|--------------|--------------|--------------|--------------|--------------|---------------------|
-| Bronze | Bz_Users | User_ID | Source | Users | User_ID | 1-1 Mapping |
-| Bronze | Bz_Users | User_Name | Source | Users | User_Name | 1-1 Mapping |
-| Bronze | Bz_Users | Email | Source | Users | Email | 1-1 Mapping |
-| Bronze | Bz_Users | Company | Source | Users | Company | 1-1 Mapping |
-| Bronze | Bz_Users | Plan_Type | Source | Users | Plan_Type | 1-1 Mapping |
-| Bronze | Bz_Users | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Users | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Users | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Meetings | Meeting_ID | Source | Meetings | Meeting_ID | 1-1 Mapping |
-| Bronze | Bz_Meetings | Host_ID | Source | Meetings | Host_ID | 1-1 Mapping |
-| Bronze | Bz_Meetings | Meeting_Topic | Source | Meetings | Meeting_Topic | 1-1 Mapping |
-| Bronze | Bz_Meetings | Start_Time | Source | Meetings | Start_Time | 1-1 Mapping |
-| Bronze | Bz_Meetings | End_Time | Source | Meetings | End_Time | 1-1 Mapping |
-| Bronze | Bz_Meetings | Duration_Minutes | Source | Meetings | Duration_Minutes | 1-1 Mapping |
-| Bronze | Bz_Meetings | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Meetings | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Meetings | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Participants | Participant_ID | Source | Participants | Participant_ID | 1-1 Mapping |
-| Bronze | Bz_Participants | Meeting_ID | Source | Participants | Meeting_ID | 1-1 Mapping |
-| Bronze | Bz_Participants | User_ID | Source | Participants | User_ID | 1-1 Mapping |
-| Bronze | Bz_Participants | Join_Time | Source | Participants | Join_Time | 1-1 Mapping |
-| Bronze | Bz_Participants | Leave_Time | Source | Participants | Leave_Time | 1-1 Mapping |
-| Bronze | Bz_Participants | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Participants | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Participants | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | Usage_ID | Source | Feature_Usage | Usage_ID | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | Meeting_ID | Source | Feature_Usage | Meeting_ID | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | Feature_Name | Source | Feature_Usage | Feature_Name | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | Usage_Count | Source | Feature_Usage | Usage_Count | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | Usage_Date | Source | Feature_Usage | Usage_Date | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Feature_Usage | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Webinars | Webinar_ID | Source | Webinars | Webinar_ID | 1-1 Mapping |
-| Bronze | Bz_Webinars | Host_ID | Source | Webinars | Host_ID | 1-1 Mapping |
-| Bronze | Bz_Webinars | Webinar_Topic | Source | Webinars | Webinar_Topic | 1-1 Mapping |
-| Bronze | Bz_Webinars | Start_Time | Source | Webinars | Start_Time | 1-1 Mapping |
-| Bronze | Bz_Webinars | End_Time | Source | Webinars | End_Time | 1-1 Mapping |
-| Bronze | Bz_Webinars | Registrants | Source | Webinars | Registrants | 1-1 Mapping |
-| Bronze | Bz_Webinars | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Webinars | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Webinars | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | Ticket_ID | Source | Support_Tickets | Ticket_ID | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | User_ID | Source | Support_Tickets | User_ID | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | Ticket_Type | Source | Support_Tickets | Ticket_Type | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | Resolution_Status | Source | Support_Tickets | Resolution_Status | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | Open_Date | Source | Support_Tickets | Open_Date | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Support_Tickets | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Licenses | License_ID | Source | Licenses | License_ID | 1-1 Mapping |
-| Bronze | Bz_Licenses | License_Type | Source | Licenses | License_Type | 1-1 Mapping |
-| Bronze | Bz_Licenses | Assigned_To_User_ID | Source | Licenses | Assigned_To_User_ID | 1-1 Mapping |
-| Bronze | Bz_Licenses | Start_Date | Source | Licenses | Start_Date | 1-1 Mapping |
-| Bronze | Bz_Licenses | End_Date | Source | Licenses | End_Date | 1-1 Mapping |
-| Bronze | Bz_Licenses | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Licenses | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Licenses | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | Event_ID | Source | Billing_Events | Event_ID | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | User_ID | Source | Billing_Events | User_ID | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | Event_Type | Source | Billing_Events | Event_Type | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | Amount | Source | Billing_Events | Amount | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | Event_Date | Source | Billing_Events | Event_Date | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | load_timestamp | System | Metadata | Load Timestamp | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | update_timestamp | System | Metadata | Update Timestamp | 1-1 Mapping |
-| Bronze | Bz_Billing_Events | source_system | System | Metadata | Source System | 1-1 Mapping |
-| Bronze | Bz_Audit_Log | audit_id | System | System | System | 1-1 Mapping |
-| Bronze | Bz_Audit_Log | table_name | System | System | System | 1-1 Mapping |
-| Bronze | Bz_Audit_Log | operation_type | System | System | System | 1-1 Mapping |
-| Bronze | Bz_Audit_Log | record_count | System | System | System | 1-1 Mapping |
-| Bronze | Bz_Audit_Log | load_timestamp | System | System | System | 1-1 Mapping |
-| Bronze | Bz_Audit_Log | source_system | System | System | System | 1-1 Mapping |
-
----
+|--------------|--------------|--------------|--------------|--------------|---------------|------------------|
+| Bronze | bz_users | user_id | Source | Users | User_ID | 1-1 Mapping |
+| Bronze | bz_users | user_name | Source | Users | User_Name | 1-1 Mapping |
+| Bronze | bz_users | email | Source | Users | Email | 1-1 Mapping |
+| Bronze | bz_users | company | Source | Users | Company | 1-1 Mapping |
+| Bronze | bz_users | plan_type | Source | Users | Plan_Type | 1-1 Mapping |
+| Bronze | bz_users | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_users | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_users | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_meetings | meeting_id | Source | Meetings | Meeting_ID | 1-1 Mapping |
+| Bronze | bz_meetings | host_id | Source | Meetings | Host_ID | 1-1 Mapping |
+| Bronze | bz_meetings | meeting_topic | Source | Meetings | Meeting_Topic | 1-1 Mapping |
+| Bronze | bz_meetings | start_time | Source | Meetings | Start_Time | 1-1 Mapping |
+| Bronze | bz_meetings | end_time | Source | Meetings | End_Time | 1-1 Mapping |
+| Bronze | bz_meetings | duration_minutes | Source | Meetings | Duration_Minutes | 1-1 Mapping |
+| Bronze | bz_meetings | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_meetings | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_meetings | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_participants | participant_id | Source | Participants | Participant_ID | 1-1 Mapping |
+| Bronze | bz_participants | meeting_id | Source | Participants | Meeting_ID | 1-1 Mapping |
+| Bronze | bz_participants | user_id | Source | Participants | User_ID | 1-1 Mapping |
+| Bronze | bz_participants | join_time | Source | Participants | Join_Time | 1-1 Mapping |
+| Bronze | bz_participants | leave_time | Source | Participants | Leave_Time | 1-1 Mapping |
+| Bronze | bz_participants | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_participants | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_participants | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_feature_usage | usage_id | Source | Feature_Usage | Usage_ID | 1-1 Mapping |
+| Bronze | bz_feature_usage | meeting_id | Source | Feature_Usage | Meeting_ID | 1-1 Mapping |
+| Bronze | bz_feature_usage | feature_name | Source | Feature_Usage | Feature_Name | 1-1 Mapping |
+| Bronze | bz_feature_usage | usage_count | Source | Feature_Usage | Usage_Count | 1-1 Mapping |
+| Bronze | bz_feature_usage | usage_date | Source | Feature_Usage | Usage_Date | 1-1 Mapping |
+| Bronze | bz_feature_usage | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_feature_usage | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_feature_usage | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_webinars | webinar_id | Source | Webinars | Webinar_ID | 1-1 Mapping |
+| Bronze | bz_webinars | host_id | Source | Webinars | Host_ID | 1-1 Mapping |
+| Bronze | bz_webinars | webinar_topic | Source | Webinars | Webinar_Topic | 1-1 Mapping |
+| Bronze | bz_webinars | start_time | Source | Webinars | Start_Time | 1-1 Mapping |
+| Bronze | bz_webinars | end_time | Source | Webinars | End_Time | 1-1 Mapping |
+| Bronze | bz_webinars | registrants | Source | Webinars | Registrants | 1-1 Mapping |
+| Bronze | bz_webinars | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_webinars | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_webinars | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_support_tickets | ticket_id | Source | Support_Tickets | Ticket_ID | 1-1 Mapping |
+| Bronze | bz_support_tickets | user_id | Source | Support_Tickets | User_ID | 1-1 Mapping |
+| Bronze | bz_support_tickets | ticket_type | Source | Support_Tickets | Ticket_Type | 1-1 Mapping |
+| Bronze | bz_support_tickets | resolution_status | Source | Support_Tickets | Resolution_Status | 1-1 Mapping |
+| Bronze | bz_support_tickets | open_date | Source | Support_Tickets | Open_Date | 1-1 Mapping |
+| Bronze | bz_support_tickets | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_support_tickets | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_support_tickets | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_licenses | license_id | Source | Licenses | License_ID | 1-1 Mapping |
+| Bronze | bz_licenses | license_type | Source | Licenses | License_Type | 1-1 Mapping |
+| Bronze | bz_licenses | assigned_to_user_id | Source | Licenses | Assigned_To_User_ID | 1-1 Mapping |
+| Bronze | bz_licenses | start_date | Source | Licenses | Start_Date | 1-1 Mapping |
+| Bronze | bz_licenses | end_date | Source | Licenses | End_Date | 1-1 Mapping |
+| Bronze | bz_licenses | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_licenses | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_licenses | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_billing_events | event_id | Source | Billing_Events | Event_ID | 1-1 Mapping |
+| Bronze | bz_billing_events | user_id | Source | Billing_Events | User_ID | 1-1 Mapping |
+| Bronze | bz_billing_events | event_type | Source | Billing_Events | Event_Type | 1-1 Mapping |
+| Bronze | bz_billing_events | amount | Source | Billing_Events | Amount | 1-1 Mapping |
+| Bronze | bz_billing_events | event_date | Source | Billing_Events | Event_Date | 1-1 Mapping |
+| Bronze | bz_billing_events | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_billing_events | update_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_billing_events | source_system | System/Metadata | System | 'ZOOM_PLATFORM' | 1-1 Mapping |
+| Bronze | bz_audit_log | record_id | System/Metadata | System | UUID() | 1-1 Mapping |
+| Bronze | bz_audit_log | source_table | System/Metadata | System | TABLE_NAME | 1-1 Mapping |
+| Bronze | bz_audit_log | load_timestamp | System/Metadata | System | CURRENT_TIMESTAMP | 1-1 Mapping |
+| Bronze | bz_audit_log | processed_by | System/Metadata | System | USER() | 1-1 Mapping |
+| Bronze | bz_audit_log | processing_time | System/Metadata | System | EXECUTION_TIME | 1-1 Mapping |
+| Bronze | bz_audit_log | status | System/Metadata | System | PROCESS_STATUS | 1-1 Mapping |
 
 ## Data Ingestion Process
 
-### Ingestion Strategy
+### Raw Data Ingestion Rules
+1. **Preserve Original Structure**: All source data fields are mapped 1-1 to Bronze layer tables
+2. **Add Metadata**: Each Bronze table includes load_timestamp, update_timestamp, and source_system
+3. **Data Types**: Maintain original data types from source system
+4. **Null Handling**: Preserve null values from source system
+5. **Audit Trail**: All ingestion activities logged in bz_audit_log table
 
-#### 1. Full Load Process
-- **Frequency**: Initial load and monthly full refresh
-- **Method**: Complete table replacement
-- **Validation**: Row count and data type validation
-- **Rollback**: Previous version retention for 30 days
+### Metadata Management
+- **load_timestamp**: Timestamp when record was first loaded into Bronze layer
+- **update_timestamp**: Timestamp when record was last updated
+- **source_system**: Identifier for source system ('ZOOM_PLATFORM')
+- **Audit Log**: Comprehensive logging of all data processing activities
 
-#### 2. Incremental Load Process
-- **Frequency**: Daily incremental loads
-- **Method**: CDC (Change Data Capture) based on source timestamps
-- **Merge Strategy**: UPSERT operations based on primary keys
-- **Conflict Resolution**: Latest timestamp wins
+### Initial Data Validation Rules
+1. **Primary Key Validation**: Ensure all primary keys are not null
+2. **Data Type Validation**: Verify data types match expected schema
+3. **Referential Integrity**: Basic checks for foreign key relationships
+4. **Duplicate Detection**: Identify and flag duplicate records
+5. **Data Quality Metrics**: Track completeness, accuracy, and consistency
 
-#### 3. Real-time Streaming (Future State)
-- **Technology**: Snowflake Streams and Tasks
-- **Latency**: Near real-time (< 5 minutes)
-- **Error Handling**: Dead letter queue for failed records
+## Snowflake Implementation Notes
 
-### Data Validation Rules
+### Data Types Compatibility
+- **VARCHAR**: For text fields (user_name, email, meeting_topic, etc.)
+- **INTEGER**: For ID fields and numeric counts
+- **TIMESTAMP**: For date/time fields
+- **DECIMAL**: For monetary amounts
+- **BOOLEAN**: For status flags
 
-#### Primary Key Validation
-```sql
--- Example for Bz_Users table
-SELECT COUNT(*) as duplicate_count
-FROM Bz_Users
-GROUP BY User_ID
-HAVING COUNT(*) > 1;
-```
+### Performance Considerations
+- **Clustering Keys**: Implement on frequently queried fields
+- **Partitioning**: Consider date-based partitioning for large tables
+- **Compression**: Leverage Snowflake's automatic compression
+- **Micro-partitions**: Optimize for Snowflake's architecture
 
-#### Data Quality Checks
-1. **Null Value Validation**: Check required fields for null values
-2. **Data Type Validation**: Ensure data types match target schema
-3. **Referential Integrity**: Validate foreign key relationships
-4. **Business Rule Validation**: Custom validation rules per table
+## Data Governance
 
-#### Metadata Validation
-```sql
--- Validate load timestamps
-SELECT table_name, 
-       MIN(load_timestamp) as earliest_load,
-       MAX(load_timestamp) as latest_load,
-       COUNT(*) as record_count
-FROM (
-    SELECT 'Bz_Users' as table_name, load_timestamp FROM Bz_Users
-    UNION ALL
-    SELECT 'Bz_Meetings' as table_name, load_timestamp FROM Bz_Meetings
-    -- Add other tables...
-)
-GROUP BY table_name;
-```
+### Data Lineage
+- Source system tracking through source_system field
+- Load tracking through timestamp fields
+- Audit trail through bz_audit_log table
 
----
+### Data Quality
+- Validation rules applied during ingestion
+- Quality metrics tracked and monitored
+- Exception handling for data quality issues
 
-## Snowflake Implementation
+### Security
+- Role-based access control (RBAC)
+- Data masking for sensitive fields
+- Encryption at rest and in transit
 
-### Database Structure
-```sql
--- Database and Schema Creation
-CREATE DATABASE IF NOT EXISTS ZOOM_ANALYTICS;
-CREATE SCHEMA IF NOT EXISTS ZOOM_ANALYTICS.BRONZE;
-CREATE SCHEMA IF NOT EXISTS ZOOM_ANALYTICS.STAGING;
-```
+## Monitoring and Alerting
 
-### Table Creation Scripts
+### Key Metrics
+- Data ingestion volume and frequency
+- Data quality scores
+- Processing time and performance
+- Error rates and exception handling
 
-#### Bz_Users Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Users (
-    User_ID VARCHAR(50) NOT NULL,
-    User_Name VARCHAR(255),
-    Email VARCHAR(255),
-    Company VARCHAR(255),
-    Plan_Type VARCHAR(100),
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Meetings Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Meetings (
-    Meeting_ID VARCHAR(50) NOT NULL,
-    Host_ID VARCHAR(50),
-    Meeting_Topic VARCHAR(500),
-    Start_Time TIMESTAMP_NTZ,
-    End_Time TIMESTAMP_NTZ,
-    Duration_Minutes INTEGER,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Participants Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Participants (
-    Participant_ID VARCHAR(50) NOT NULL,
-    Meeting_ID VARCHAR(50),
-    User_ID VARCHAR(50),
-    Join_Time TIMESTAMP_NTZ,
-    Leave_Time TIMESTAMP_NTZ,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Feature_Usage Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Feature_Usage (
-    Usage_ID VARCHAR(50) NOT NULL,
-    Meeting_ID VARCHAR(50),
-    Feature_Name VARCHAR(255),
-    Usage_Count INTEGER,
-    Usage_Date DATE,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Webinars Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Webinars (
-    Webinar_ID VARCHAR(50) NOT NULL,
-    Host_ID VARCHAR(50),
-    Webinar_Topic VARCHAR(500),
-    Start_Time TIMESTAMP_NTZ,
-    End_Time TIMESTAMP_NTZ,
-    Registrants INTEGER,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Support_Tickets Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Support_Tickets (
-    Ticket_ID VARCHAR(50) NOT NULL,
-    User_ID VARCHAR(50),
-    Ticket_Type VARCHAR(100),
-    Resolution_Status VARCHAR(50),
-    Open_Date DATE,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Licenses Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Licenses (
-    License_ID VARCHAR(50) NOT NULL,
-    License_Type VARCHAR(100),
-    Assigned_To_User_ID VARCHAR(50),
-    Start_Date DATE,
-    End_Date DATE,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Billing_Events Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Billing_Events (
-    Event_ID VARCHAR(50) NOT NULL,
-    User_ID VARCHAR(50),
-    Event_Type VARCHAR(100),
-    Amount DECIMAL(10,2),
-    Event_Date DATE,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    update_timestamp TIMESTAMP_NTZ,
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-#### Bz_Audit_Log Table
-```sql
-CREATE OR REPLACE TABLE ZOOM_ANALYTICS.BRONZE.Bz_Audit_Log (
-    audit_id VARCHAR(50) NOT NULL,
-    table_name VARCHAR(100) NOT NULL,
-    operation_type VARCHAR(20) NOT NULL,
-    record_count INTEGER,
-    load_timestamp TIMESTAMP_NTZ NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    source_system VARCHAR(50) NOT NULL DEFAULT 'ZOOM_ANALYTICS'
-);
-```
-
-### Performance Optimization
-
-#### Clustering Keys
-```sql
--- Cluster tables by frequently queried columns
-ALTER TABLE ZOOM_ANALYTICS.BRONZE.Bz_Meetings 
-CLUSTER BY (Start_Time, Host_ID);
-
-ALTER TABLE ZOOM_ANALYTICS.BRONZE.Bz_Participants 
-CLUSTER BY (Meeting_ID, Join_Time);
-
-ALTER TABLE ZOOM_ANALYTICS.BRONZE.Bz_Feature_Usage 
-CLUSTER BY (Usage_Date, Meeting_ID);
-```
-
-#### Time Travel and Data Retention
-```sql
--- Set data retention for Bronze tables
-ALTER TABLE ZOOM_ANALYTICS.BRONZE.Bz_Users 
-SET DATA_RETENTION_TIME_IN_DAYS = 30;
-
-ALTER TABLE ZOOM_ANALYTICS.BRONZE.Bz_Meetings 
-SET DATA_RETENTION_TIME_IN_DAYS = 30;
-
--- Apply to all Bronze tables...
-```
+### Alerting Rules
+- Failed data loads
+- Data quality threshold breaches
+- Performance degradation
+- Schema changes in source systems
 
 ---
 
-## API Cost Information
-
-As per requirements, API cost tracking has been excluded from the Bronze layer implementation. The focus remains on core business data ingestion and analytics. Cost monitoring can be implemented through separate operational monitoring systems if needed in the future.
-
----
-
-## Summary
-
-This Bronze Layer Data Mapping document version 4 provides:
-- **Complete field-level mapping** for all 8 source tables to Bronze layer tables
-- **1-1 transformation rules** preserving raw data structure
-- **Metadata management** with standardized audit columns
-- **Snowflake optimization** for medallion architecture implementation
-- **Comprehensive documentation** for data engineering teams
-- **Performance optimization** guidelines
-- **Data quality framework** with validation rules
-
-The mapping covers 72 total field mappings across 9 Bronze tables (8 business tables + 1 audit table), ensuring complete data preservation and traceability from source to Bronze layer in the Zoom Platform Analytics Systems.
-
----
-
-**Document Status**: Final  
-**Version**: 4.0  
-**Implementation Ready**: Yes  
-**Next Phase**: Silver Layer Development
+*This document serves as the foundation for Bronze layer implementation in the Medallion architecture for Zoom Platform Analytics Systems on Snowflake.*

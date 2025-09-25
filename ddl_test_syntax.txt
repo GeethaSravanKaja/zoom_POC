@@ -1,0 +1,39 @@
+-- ✅ Correct SQL
+CREATE TABLE og.customers (
+    id INT PRIMARY KEY,
+    name STRING,
+    created_at TIMESTAMP
+);
+
+-- ❌ Wrong SQL: typo in TABLE keyword
+CREATE TABL og.orders (
+    order_id INT PRIMARY KEY,
+    customer_id INT,
+    total NUMBER
+);
+
+-- ✅ Correct SQL
+CREATE TABLE og.products (
+    product_id INT PRIMARY KEY,
+    product_name STRING,
+    price NUMBER(10,2)
+);
+
+-- ❌ Wrong SQL: extra comma before closing parenthesis
+CREATE TABLE og.payments (
+    payment_id INT,
+    amount NUMBER,
+);
+
+-- ❌ Wrong SQL: invalid datatype STRIN instead of STRING
+CREATE TABLE og.suppliers (
+    supplier_id INT,
+    supplier_name STRIN
+);
+
+-- ✅ Correct SQL
+CREATE TABLE og.inventory (
+    item_id INT PRIMARY KEY,
+    stock_quantity INT,
+    last_updated DATE
+);

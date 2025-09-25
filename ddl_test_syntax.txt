@@ -1,11 +1,13 @@
--- ✅ Correct SQL
+-- ✅ Correct SQL (fully qualified with schema)
+CREATE SCHEMA IF NOT EXISTS og;
+
 CREATE TABLE og.customers (
     id INT PRIMARY KEY,
     name STRING,
     created_at TIMESTAMP
 );
 
--- ❌ Wrong SQL: typo in TABLE keyword
+-- ❌ Wrong SQL: typo in TABLE keyword (will fail in syntax check mode)
 CREATE TABL og.orders (
     order_id INT PRIMARY KEY,
     customer_id INT,
@@ -13,20 +15,26 @@ CREATE TABL og.orders (
 );
 
 -- ✅ Correct SQL
-CREATE TABLE og.products (
+CREATE SCHEMA IF NOT EXISTS bronze;
+
+CREATE TABLE bronze.products (
     product_id INT PRIMARY KEY,
     product_name STRING,
     price NUMBER(10,2)
 );
 
 -- ❌ Wrong SQL: extra comma before closing parenthesis
-CREATE TABLE og.payments (
+CREATE SCHEMA IF NOT EXISTS silver;
+
+CREATE TABLE silver.payments (
     payment_id INT,
     amount NUMBER,
 );
 
 -- ❌ Wrong SQL: invalid datatype STRIN instead of STRING
-CREATE TABLE og.suppliers (
+CREATE SCHEMA IF NOT EXISTS gold;
+
+CREATE TABLE gold.suppliers (
     supplier_id INT,
     supplier_name STRIN
 );

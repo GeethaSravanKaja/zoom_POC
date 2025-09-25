@@ -1,47 +1,36 @@
--- ✅ Correct SQL (fully qualified with schema)
-CREATE SCHEMA IF NOT EXISTS og;
-
-CREATE TABLE og.customers (
-    id INT PRIMARY KEY,
-    name STRING,
-    created_at TIMESTAMP
-);
-
--- ❌ Wrong SQL: typo in TABLE keyword (will fail in syntax check mode)
-CREATE TABL og.orders (
-    order_id INT PRIMARY KEY,
-    customer_id INT,
-    total NUMBER
-);
-
 -- ✅ Correct SQL
 CREATE SCHEMA IF NOT EXISTS bronze;
 
-CREATE TABLE bronze.products (
-    product_id INT PRIMARY KEY,
-    product_name STRING,
-    price NUMBER(10,2)
+-- ✅ Correct SQL
+CREATE TABLE IF NOT EXISTS bronze.customers (
+    customer_id INT,
+    customer_name STRING,
+    email STRING
 );
 
--- ❌ Wrong SQL: extra comma before closing parenthesis
-CREATE SCHEMA IF NOT EXISTS silver;
-
-CREATE TABLE silver.payments (
-    payment_id INT,
-    amount NUMBER,
+-- ✅ Correct SQL
+CREATE TABLE IF NOT EXISTS bronze.orders (
+    order_id INT,
+    customer_id INT,
+    amount NUMBER(10,2),
+    order_date DATE
 );
 
--- ❌ Wrong SQL: invalid datatype STRIN instead of STRING
-CREATE SCHEMA IF NOT EXISTS gold;
+-- ❌ Wrong SQL: typo in CREATE keyword
+CRETAE TABLE bronze.bad_table (
+    id INT,
+    value STRING
+);
 
+-- ❌ Wrong SQL: invalid datatype "STRIN"
 CREATE TABLE gold.suppliers (
     supplier_id INT,
     supplier_name STRIN
 );
 
--- ✅ Correct SQL
-CREATE TABLE og.inventory (
-    item_id INT PRIMARY KEY,
-    stock_quantity INT,
-    last_updated DATE
+-- ❌ Wrong SQL: extra comma before closing parenthesis
+CREATE TABLE silver.payments (
+    payment_id INT,
+    order_id INT,
+    amount NUMBER(10,2),
 );

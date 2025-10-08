@@ -19,9 +19,9 @@ Monitor user engagement and platform adoption rates to identify growth trends an
 - Assess the adoption of new features.
 
 ### Data Relationships Used
-- Meetings   Users (via Host_ID)
-- Attendees  Meetings (via Meeting_ID)
-- Features_Usage  Meetings (via Meeting_ID)
+- Meetings --> Users (via Host_ID)
+- Attendees --> Meetings (via Meeting_ID)
+- Features_Usage --> Meetings (via Meeting_ID)
 
 ### Data Attributes in the Report
 - User information (User_ID, Plan_Type)
@@ -72,8 +72,8 @@ Analyze platform stability and customer support interactions to improve service 
 - Assess the efficiency of the support team.
 
 ### Data Relationships Used
-- Support_Tickets   Users (via User_ID)
-- Support_Tickets   Meetings (implied link, not direct FK)
+- Support_Tickets --> Users (via User_ID)
+- Support_Tickets --> Meetings (implied link, not direct FK)
 
 ### Data Attributes in the Report
 - Ticket information (Ticket_ID, Ticket_Type, Resolution_Status, Open_Date)
@@ -100,7 +100,6 @@ Analyze platform stability and customer support interactions to improve service 
 ### Visualizations
 - Bar chart showing ticket volume by Ticket_Type.
 - Line chart tracking average resolution time over time.
-- Donut chart showing Resolution_Status distribution.
 
 ### Access Control Requirements
 - Support Team Leads: Full access to all ticket data for their team.
@@ -121,9 +120,9 @@ Monitor billing events and license utilization to understand revenue streams and
 - Forecast future revenue based on license data.
 
 ### Data Relationships Used
-- Billing_Events   Users (via User_ID)
-- Licenses   Users (via Assigned_To_User_ID)
-- Meetings   Users (via Host_ID)
+- Billing_Events --> Users (via User_ID)
+- Licenses --> Users (via Assigned_To_User_ID)
+- Meetings  --> Users (via Host_ID)
 
 ### Data Attributes in the Report
 - Billing information (Event_Type, Amount)
